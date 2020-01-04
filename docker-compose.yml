@@ -1,0 +1,24 @@
+version: '3.7'
+services:
+  postgres:
+    image: postgres
+    container_name: postgres_community
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data/pgdata
+    environment:
+      POSTGRES_PASSWORD: docker
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+      restart: always
+
+  community_app:
+    image: cade340/community-app
+    container_name: community_app_container
+    ports:
+      - 8080:8080
+    restart: always
+    links:
+      - postgres

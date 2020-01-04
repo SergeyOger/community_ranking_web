@@ -1,0 +1,10 @@
+.login {
+  text-align: center;
+  margin: 10%;
+}
+
+mat-form-field {
+  width: auto;
+  display: flex;
+  flex-direction: column;
+}

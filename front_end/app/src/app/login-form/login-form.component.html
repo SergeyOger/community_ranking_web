@@ -1,0 +1,32 @@
+<mat-card class="login">
+  <mat-error *ngIf="showLoginError">
+    Login error, check you email and password!
+    <br><br><br>
+  </mat-error><br>
+
+  <form [formGroup]="loginForm">
+    <mat-card-title>Log in</mat-card-title>
+    <mat-card-content>
+
+      <mat-form-field>
+        <input matInput placeholder="Email" formControlName="email" required
+               [(ngModel)]="email" name="email">
+        <mat-error *ngIf="!loginForm.get('email').valid">{{getEmailErrorMessage()}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Enter your password" [type]="hide ? 'password' : 'text'"
+               required [(ngModel)]="password" name="password" formControlName="password">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="!loginForm.get('password').valid">
+          {{getPasswordErrorMessage()}}
+        </mat-error>
+      </mat-form-field>
+      <button mat-flat-button type="button" (click)="login()" [disabled]="!isFormValid()">Log in
+      </button>
+    </mat-card-content>
+  </form>
+</mat-card>

@@ -1,0 +1,65 @@
+<mat-card class="registration">
+  <mat-card-title>Registration</mat-card-title>
+  <mat-card-content>
+    <mat-form-field>
+      <input matInput placeholder="First name" [(ngModel)]="user.firstName"
+             name="firstName" required [formControl]="name">
+      <mat-error *ngIf="name.invalid">You must enter a value</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Last name" [(ngModel)]="user.lastName"
+             name="lastName" required [formControl]="name">
+      <mat-error *ngIf="name.invalid">You must enter a value</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Email" [(ngModel)]="user.email" name="email" required
+             [formControl]="email">
+      <mat-error *ngIf="email.invalid">{{getEmailErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Phone number" [(ngModel)]="user.phoneNumber"
+             name="phoneNumber" required [formControl]="phone">
+      <mat-error *ngIf="phone.invalid">{{getPhoneErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Repository address" [(ngModel)]="user.repository"
+             name="repository" required [formControl]="repository">
+      <mat-error *ngIf="repository.invalid">{{getRepositoryErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Enter your password" [type]="hide ? 'password' : 'text'"
+             required [(ngModel)]="user.password" name="password"
+             [formControl]="password">
+      <mat-error *ngIf="password.invalid">
+        {{getPasswordErrorMessage(password)}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Repeat password" [type]="hide ? 'password' : 'text'"
+             required [(ngModel)]="user.repeatedPassword" name="repeatedPassword"
+             [formControl]="repeatedPassword">
+      <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hide">
+        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+      <mat-error *ngIf="password.invalid">
+        {{getPasswordErrorMessage(repeatedPassword)}}
+      </mat-error>
+
+      <mat-error *ngIf="user.password!==user.repeatedPassword ">
+        'Passwords do not match';
+      </mat-error>
+    </mat-form-field>
+
+    <button mat-stroked-button (click)="registerUser()" [disabled]="!isFormValid()">
+      Submit
+    </button>
+
+  </mat-card-content>
+</mat-card>

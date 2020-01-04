@@ -1,0 +1,58 @@
+<mat-toolbar color="primary">
+  <div>
+    <h2 routerLink="/home" routerLinkActive="active">Community ranking web</h2>
+  </div>
+
+  <div [hidden]="authenticated()">
+    <span><button mat-stroked-button routerLink="/home"
+                  routerLinkActive="active">Home</button></span>
+    <span><button mat-stroked-button [matMenuTriggerFor]="account">Start training</button></span>
+    <span><button mat-stroked-button [matMenuTriggerFor]="about">About</button></span>
+  </div>
+
+  <div [hidden]="!authenticated() || isAdmin()">
+    <span><button mat-stroked-button [matMenuTriggerFor]="studentmenu">Menu</button></span>
+  </div>
+
+  <div [hidden]="!authenticated() || !isAdmin()">
+    <span><button mat-stroked-button routerLink="/admin" routerLinkActive="active">Administration console menu</button></span>
+    <span><button mat-stroked-button (click)="logout()">Log out</button></span>
+  </div>
+</mat-toolbar>
+
+<mat-menu #about>
+  <ng-template matMenuContent>
+    <button mat-menu-item routerLink="/courses" routerLinkActive="active">About courses</button>
+    <button mat-menu-item routerLink="/company" routerLinkActive="active">About company</button>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #account>
+  <ng-template matMenuContent>
+    <button mat-menu-item routerLink="/login" routerLinkActive="active">Login</button>
+    <button mat-menu-item routerLink="/registration" routerLinkActive="active">Create account
+    </button>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #studentmenu>
+  <ng-template matMenuContent>
+    <button mat-menu-item routerLink="/student" routerLinkActive="active">Student page</button>
+    <button mat-menu-item routerLink="/course-list" routerLinkActive="active">Courses</button>
+    <button mat-menu-item routerLink="/logout" (click)="logout()">Log out</button>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #adminmenu>
+  <ng-template matMenuContent>
+    <button mat-menu-item routerLink="/student" routerLinkActive="active">Student page</button>
+    <button mat-menu-item routerLink="/course-list" routerLinkActive="active">Courses</button>
+    <button mat-menu-item routerLink="/logout" (click)="logout()">Log out</button>
+  </ng-template>
+</mat-menu>
+
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
+
+
