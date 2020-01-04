@@ -12,6 +12,7 @@ export class CoursesPageComponent implements OnInit {
   private coursesPath = '/api/courses';
 
   private courses: Course[];
+  private displayedColumns: string[] = ['title', 'text', 'points'];
 
   constructor(private http: HttpClient) {
   }

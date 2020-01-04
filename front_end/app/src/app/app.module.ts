@@ -28,6 +28,7 @@ import {CoursesPageComponent} from './courses-page/courses-page.component';
 import {MatTableModule} from '@angular/material/table';
 import {MatListModule} from '@angular/material/list';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatExpansionModule} from "@angular/material/expansion";
 
 
 @NgModule({
@@ -61,7 +62,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatProgressSpinnerModule,
     MatTableModule,
     MatListModule,
-    MatTabsModule
+    MatTabsModule,
+    MatExpansionModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

@@ -11,7 +11,9 @@
   </div>
 
   <div [hidden]="!authenticated() || isAdmin()">
-    <span><button mat-stroked-button [matMenuTriggerFor]="studentmenu">Menu</button></span>
+    <span><button mat-stroked-button routerLink="/course-list" routerLinkActive="active">Courses</button></span>
+    <span><button mat-stroked-button routerLink="/student" routerLinkActive="active">Profile</button></span>
+    <span><button mat-stroked-button (click)="logout()">Log out</button></span>
   </div>
 
   <div [hidden]="!authenticated() || !isAdmin()">
@@ -32,14 +34,6 @@
     <button mat-menu-item routerLink="/login" routerLinkActive="active">Login</button>
     <button mat-menu-item routerLink="/registration" routerLinkActive="active">Create account
     </button>
-  </ng-template>
-</mat-menu>
-
-<mat-menu #studentmenu>
-  <ng-template matMenuContent>
-    <button mat-menu-item routerLink="/student" routerLinkActive="active">Student page</button>
-    <button mat-menu-item routerLink="/course-list" routerLinkActive="active">Courses</button>
-    <button mat-menu-item routerLink="/logout" (click)="logout()">Log out</button>
   </ng-template>
 </mat-menu>
 
