@@ -27,18 +27,20 @@ public class UserController {
   }
 
   @GetMapping
-  public List<User> getUser() {
+  public List<User> getUsers() {
+    log.debug("Retrieving all users");
     return userService.getUsers();
   }
 
   @PutMapping
   public void createUser(@RequestBody User user) {
-    log.info("Received user info {}", user);
+    log.debug("Received user {}", user);
     userService.saveUser(user);
   }
 
   @DeleteMapping("/{email}")
-  public Boolean deleteUser(@PathVariable String email) {
-    return userService.deleteUserByEmail(email);
+  public void deleteUser(@PathVariable String email) {
+    log.debug("Received user email {}", email);
+    userService.deleteUserByEmail(email);
   }
 }

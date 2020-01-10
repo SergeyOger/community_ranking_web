@@ -30,32 +30,33 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
   @Autowired
-  AuthenticationManager authenticationManager;
+  private AuthenticationManager authenticationManager;
 
   @Autowired
-  JwtTokenProvider jwtTokenProvider;
+  private JwtTokenProvider jwtTokenProvider;
 
   @Autowired
-  UserRepository userRepository;
+  private UserRepository userRepository;
 
   @Autowired
   private CommunityUserDetailsService userDetailsService;
 
   @PostMapping("/login")
   public ResponseEntity<Object> login(@RequestBody AuthBody authData) {
+    log.debug("Received auth request {}", authData);
     try {
       String email = authData.getEmail();
-      log.info("Received login email {}", email);
+      log.info("Received email {}", email);
       authenticationManager
           .authenticate(new UsernamePasswordAuthenticationToken(email, authData.getPassword()));
-      User user = this.userRepository.findUserByEmail(email);
+      User user = userRepository.findUserByEmail(email);
       String token = jwtTokenProvider
           .createToken(email, user.getRole());
       Map<Object, Object> model = new HashMap<>();
       model.put("email", email);
       model.put("token", token);
       model.put("role", user.getRole());
-      log.info("Login user has email {} and role {}", user.getEmail(), user.getRole());
+      log.debug("Login user has email {} and role {}", user.getEmail(), user.getRole());
       return ok(model);
     } catch (AuthenticationException e) {
       return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -64,8 +65,9 @@ public class AuthController {
 
   @PostMapping("/register")
   public ResponseEntity<Object> register(@RequestBody User user) {
-    log.info("User registration data {}", user);
+    log.debug("User registration data {}", user);
     if (userDetailsService.findUserByEmail(user.getEmail()) != null) {
+      log.debug("Error saving user, user with email {} already exist", user.getEmail());
       throw new BadCredentialsException(
           "User with username: " + user.getEmail() + " already exists");
     }

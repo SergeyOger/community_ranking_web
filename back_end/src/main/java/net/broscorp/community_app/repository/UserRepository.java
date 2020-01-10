@@ -9,5 +9,5 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 
   User findUserByEmail(String email);
 
-  boolean deleteByEmail(String email);
+  void deleteByEmail(String email);
 }

@@ -29,7 +29,7 @@ public class CommunityUserDetailsService implements UserDetailsService {
   public List<User> getUsers() {
     List<User> users = new ArrayList<>();
     userRepository.findAll().forEach(users::add);
-    log.info("Received user list {}", users);
+    log.debug("Received user list {}", users);
     return users;
   }
 
@@ -41,12 +41,14 @@ public class CommunityUserDetailsService implements UserDetailsService {
     user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
     user.setActive(true);
     user.setRole("ROLE_USER");
+    log.debug("Saved user {}", user);
     userRepository.save(user);
   }
 
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
     User user = userRepository.findUserByEmail(email);
+    log.debug("Retrieved user {} by email {}", user, email);
     if (user != null) {
       List<GrantedAuthority> authorities = Collections.singletonList(
           new SimpleGrantedAuthority(user.getRole()));
@@ -60,7 +62,7 @@ public class CommunityUserDetailsService implements UserDetailsService {
         user.getPassword(), authorities);
   }
 
-  public boolean deleteUserByEmail(String email) {
-    return userRepository.deleteByEmail(email);
+  public void deleteUserByEmail(String email) {
+    userRepository.deleteByEmail(email);
   }
 }

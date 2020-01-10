@@ -21,27 +21,27 @@ public class CourseService {
   public List<Course> getCourseList() {
     List<Course> courses = new ArrayList<>();
     courseRepository.findAll().forEach(courses::add);
-    log.info("In getCourses() was returned {} courses", courses.size());
+    log.debug("In getCourses() was returned {} courses", courses.size());
     return courses;
   }
 
   public Course getCourseByName(String courseName) {
     if (courseRepository.existsById(courseName)) {
       Course course = courseRepository.findById(courseName).get();
-      log.info("In getCourseByName() by {} was returned course {}", courseName, course);
+      log.debug("In getCourseByName() by {} was returned course {}", courseName, course);
     }
     throw new CourseNotFoundException();
   }
 
   public Course saveCourse(Course course) {
     Course savedCourse = courseRepository.save(course);
-    log.info("In saveCourse, requested course {}, saved course {}", course, savedCourse);
+    log.debug("In saveCourse, requested course {}, saved course {}", course, savedCourse);
     return courseRepository.save(course);
   }
 
   public Course updateCourseByName(Course course) {
     Course updatedCourse = courseRepository.save(course);
-    log.info(
+    log.debug(
         "In updateCourse, received course is {} ang returned course is {}", course, updatedCourse);
     return updatedCourse;
   }
@@ -49,7 +49,7 @@ public class CourseService {
   public boolean deleteCourseByName(String courseName) {
     if (courseRepository.existsById(courseName)) {
       courseRepository.deleteById(courseName);
-      log.info("In deleteCourseById(), course with name {} was successfully deleted", courseName);
+      log.debug("In deleteCourseById(), course with name {} was successfully deleted", courseName);
       return true;
     }
     throw new CourseNotFoundException();
