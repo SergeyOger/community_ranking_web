@@ -13,13 +13,11 @@ public class JwtConfigurer extends
   private JwtTokenProvider jwtTokenProvider;
 
   public JwtConfigurer(JwtTokenProvider jwtTokenProvider) {
-    log.info("Creating jwt token provider");
     this.jwtTokenProvider = jwtTokenProvider;
   }
 
   @Override
   public void configure(HttpSecurity http) {
-    log.info("Creating and adding jwt token filter");
     JwtTokenFilter tokenFilter = new JwtTokenFilter(jwtTokenProvider);
     http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
   }

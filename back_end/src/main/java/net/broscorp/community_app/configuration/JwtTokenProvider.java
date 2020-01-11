@@ -38,7 +38,7 @@ public class JwtTokenProvider {
   }
 
   public String createToken(String email, String role) {
-    log.info("Creating jwt token for user {} with role {}", email, role);
+    log.debug("Creating jwt token for user {} with role {}", email, role);
     Claims claims = Jwts.claims().setSubject(email);
     claims.put("roles", role);
     Date now = new Date();
