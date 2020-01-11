@@ -15,7 +15,7 @@ services:
       restart: always
 
   community_app:
-    image: cade340/community-app
+    image: zmex/community-app
     container_name: community_app_container
     ports:
       - 8080:8080

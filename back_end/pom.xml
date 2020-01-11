@@ -7,11 +7,11 @@
   <parent>
     <artifactId>community_ranking_web_V2</artifactId>
     <groupId>net.broscorp</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
   </parent>
 
   <artifactId>back_end</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
 
   <build>
     <plugins>
@@ -30,6 +30,38 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>com.spotify</groupId>
+        <artifactId>dockerfile-maven-plugin</artifactId>
+        <version>1.4.13</version>
+        <executions>
+          <execution>
+            <id>Build Docker image</id>
+            <phase>install</phase>
+            <goals>
+              <goal>build</goal>
+            </goals>
+            <configuration>
+              <repository>${env.DOCKER_HUB_REPO}</repository>
+              <tag>latest</tag>
+              <buildArgs>
+                <JAR_FILE>${project.artifactId}-${project.version}.jar</JAR_FILE>
+              </buildArgs>
+            </configuration>
+          </execution>
+          <execution>
+            <id>Push image to Docker Hub</id>
+            <phase>deploy</phase>
+            <goals>
+              <goal>push</goal>
+            </goals>
+            <configuration>
+              <tag>latest</tag>
+              <repository>${env.DOCKER_HUB_REPO}</repository>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
@@ -37,7 +69,7 @@
     <dependency>
       <groupId>net.broscorp</groupId>
       <artifactId>front_end</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>1.0</version>
     </dependency>
 
     <dependency>
@@ -85,6 +117,13 @@
       <artifactId>jjwt</artifactId>
       <version>0.9.1</version>
     </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.10.1</version>
+    </dependency>
+
 
     <dependency>
       <groupId>org.springframework.boot</groupId>

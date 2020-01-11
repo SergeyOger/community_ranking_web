@@ -14,12 +14,23 @@
   <groupId>net.broscorp</groupId>
   <artifactId>community_ranking_web_V2</artifactId>
   <packaging>pom</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
 
   <modules>
     <module>back_end</module>
     <module>front_end</module>
-
   </modules>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
