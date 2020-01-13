@@ -1,11 +1,11 @@
 package net.broscorp.community_app.controllers;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.broscorp.community_app.configuration.JwtTokenProvider;
 import net.broscorp.community_app.model.AuthBody;
@@ -18,15 +18,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(AuthController.class)
 class AuthControllerTest {
 
-  private static final String EMAIL = "test@test";
+  private static final String EMAIL = "test2@test";
   private static final String PASSWORD = "11111111a";
   private static final String ROLE = "ROLE_USER";
   private static final String TOKEN = "TOKEN_FOR_USER";
@@ -35,7 +35,6 @@ class AuthControllerTest {
   Authentication authentication;
   @MockBean
   CommunityUserDetailsService userDetailsService;
-  private String content;
   @MockBean
   private User user;
   @MockBean
@@ -77,9 +76,8 @@ class AuthControllerTest {
 
   }
 
-   //TODO Why throw exception don't work?
   @Test
-   void loginWithWrongCredentials() throws Exception {
+  void loginWithWrongCredentials() throws Exception {
 
     // WITH
     AuthBody authBody = new AuthBody();
@@ -87,7 +85,8 @@ class AuthControllerTest {
     authBody.setPassword(PASSWORD);
 
     when(user.getRole()).thenReturn(ROLE);
-    when(authenticationManager.authenticate(any())).thenThrow(AuthenticationException.class);
+    when(authenticationManager.authenticate(any()))
+        .thenThrow(AuthenticationCredentialsNotFoundException.class);
 
     // WHEN
 
@@ -102,17 +101,6 @@ class AuthControllerTest {
   @Test
   void register() throws Exception {
 
-//    log.debug("User registration data {}", user);
-//    if (userDetailsService.findUserByEmail(user.getEmail()) != null) {
-//      log.debug("Error saving user, user with email {} already exist", user.getEmail());
-//      throw new BadCredentialsException(
-//          "User with username: " + user.getEmail() + " already exists");
-//    }
-//    userDetailsService.saveUser(user);
-//    Map<Object, Object> model = new HashMap<>();
-//    model.put("message", "User registered successfully");
-//    return ok(model);
-
     // WITH
     User user = new User();
     user.setEmail(EMAIL);
@@ -121,15 +109,16 @@ class AuthControllerTest {
     user.setActive(true);
     user.setFirstName("test");
     user.setLastName("test");
-    user.setPhoneNumber("61465465");
+    user.setPhoneNumber("0000000000");
     user.setRepository("repo");
 
     // WHEN
-    when(userDetailsService.findUserByEmail(user.getEmail())).thenReturn(user);
+    when(userDetailsService.findUserByEmail(EMAIL)).thenReturn(null);
+    doNothing().when(userDetailsService).saveUser(user);
 
     // THEN
     mockMvc.perform(post("/api/auth/register").
-        content(objectMapper.writeValueAsString(objectMapper.writeValueAsString(user)))
+        content(objectMapper.writeValueAsString(user))
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON)
     ).andExpect(status().isOk());

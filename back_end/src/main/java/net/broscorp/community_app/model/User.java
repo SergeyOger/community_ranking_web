@@ -29,11 +29,14 @@ public class User {
   @Column(nullable = false)
   private String password;
 
+  @Column(nullable = false)
   private String repository;
 
   private String phoneNumber;
 
+  @Column(columnDefinition = "true")
   private boolean active;
 
+  @Column(nullable = false)
   private String role;
 }
